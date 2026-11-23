@@ -1,84 +1,178 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Draw from JSON</title>
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Valerie florece</title>
+  <style>
+    html, body { height: 100%; }
+    * { box-sizing: border-box; }
     body {
-        margin: 0;
-        background: black;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255, 232, 142, .22), transparent 24rem),
+        linear-gradient(180deg, #091a2f 0%, #18385a 70%, #0b1d16 100%);
+      color: #fff;
+      font-family: Georgia, "Times New Roman", serif;
     }
-    canvas {
-        border: 1px solid #444;
-        background: black;
+
+    .scene {
+      position: relative;
+      width: min(92vw, 760px);
+      height: min(92vh, 760px);
+      filter: drop-shadow(0 22px 24px rgba(0, 0, 0, .35));
     }
-</style>
+
+    svg { width: 100%; height: 100%; display: block; }
+
+    .name {
+      position: absolute;
+      left: 50%;
+      bottom: 2.5%;
+      transform: translateX(-50%);
+      margin: 0;
+      white-space: nowrap;
+      font-size: clamp(3.2rem, 12vw, 7.5rem);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: .02em;
+      color: #fff4a8;
+      text-shadow:
+        0 2px 0 #c99a28,
+        0 0 12px rgba(255, 221, 92, .9),
+        0 0 32px rgba(255, 196, 52, .65);
+      animation: nameGlow 3s ease-in-out infinite alternate;
+    }
+
+    .name::before,
+    .name::after {
+      content: "✦";
+      position: absolute;
+      top: 45%;
+      color: #ffd95a;
+      font-size: .24em;
+      text-shadow: 0 0 12px #fff;
+      animation: sparkle 1.8s ease-in-out infinite;
+    }
+    .name::before { left: -.55em; }
+    .name::after { right: -.55em; animation-delay: .9s; }
+
+    .branch {
+      stroke: #5a351f;
+      stroke-width: 16;
+      stroke-linecap: round;
+      fill: none;
+      transform-origin: 380px 650px;
+      animation: sway 4.8s ease-in-out infinite alternate;
+    }
+    .branch.thin { stroke-width: 9; animation-duration: 5.6s; }
+
+    .flower {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: bloom 2.8s cubic-bezier(.2,.7,.2,1) both, swayFlower 4s ease-in-out infinite alternate;
+    }
+    .flower:nth-child(3n) { animation-delay: .15s, .4s; }
+    .flower:nth-child(3n + 1) { animation-delay: .45s, .9s; }
+
+    .petal { fill: #ffc928; stroke: #e6a612; stroke-width: 2; }
+    .center { fill: #7a4517; }
+    .dot { fill: #d08a1c; }
+
+    .leaf {
+      fill: #2f7a3f;
+      stroke: #174d2b;
+      stroke-width: 3;
+      transform-box: fill-box;
+      transform-origin: bottom center;
+      animation: leafSway 3.8s ease-in-out infinite alternate;
+    }
+
+    .firefly {
+      fill: #fff39a;
+      filter: drop-shadow(0 0 6px #ffe56b);
+      animation: float 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes sway { to { transform: rotate(1.5deg); } }
+    @keyframes swayFlower { to { transform: rotate(5deg) scale(1.04); } }
+    @keyframes leafSway { to { transform: rotate(8deg); } }
+    @keyframes bloom {
+      0% { opacity: 0; transform: scale(.05) rotate(-20deg); }
+      65% { transform: scale(1.12) rotate(3deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0); }
+    }
+    @keyframes nameGlow {
+      from { filter: drop-shadow(0 0 4px rgba(255, 229, 96, .4)); }
+      to { filter: drop-shadow(0 0 16px rgba(255, 229, 96, .9)); }
+    }
+    @keyframes sparkle {
+      50% { opacity: .25; transform: scale(.55) rotate(90deg); }
+    }
+    @keyframes float {
+      to { transform: translate(18px, -28px); opacity: .35; }
+    }
+  </style>
 </head>
 <body>
+  <main class="scene" aria-label="Árbol con flores amarillas y el nombre Valerie">
+    <svg viewBox="0 0 760 760" role="img" aria-label="Árbol animado florecido">
+      <g class="canopy">
+        <path class="branch" d="M380 660 C375 555 390 470 365 365 C350 300 325 250 300 205"/>
+        <path class="branch thin" d="M365 420 C280 390 220 330 180 260"/>
+        <path class="branch thin" d="M370 380 C445 340 510 285 545 220"/>
+        <path class="branch thin" d="M350 470 C270 455 205 420 150 365"/>
+        <path class="branch thin" d="M385 500 C465 475 550 420 600 350"/>
+        <path class="branch thin" d="M330 295 C300 235 292 180 310 130"/>
+        <path class="branch thin" d="M430 330 C440 270 470 205 510 160"/>
 
-<canvas id="canvas" width="800" height="800"></canvas>
+        <g class="leaf" style="transform-origin: 180px 260px"><ellipse cx="188" cy="250" rx="38" ry="18" transform="rotate(-35 188 250)"/></g>
+        <g class="leaf"><ellipse cx="230" cy="330" rx="42" ry="20" transform="rotate(38 230 330)"/></g>
+        <g class="leaf"><ellipse cx="285" cy="210" rx="40" ry="19" transform="rotate(-55 285 210)"/></g>
+        <g class="leaf"><ellipse cx="500" cy="250" rx="43" ry="20" transform="rotate(38 500 250)"/></g>
+        <g class="leaf"><ellipse cx="555" cy="350" rx="42" ry="19" transform="rotate(-20 555 350)"/></g>
+        <g class="leaf"><ellipse cx="430" cy="240" rx="40" ry="18" transform="rotate(-42 430 240)"/></g>
 
-<script>
-async function drawFromJson(jsonFile) {
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
+        <g class="flower" transform="translate(300 205)">
+          <g fill="#ffc928" stroke="#dba71a" stroke-width="2">
+            <ellipse class="petal" cy="-28" rx="17" ry="32"/><ellipse class="petal" cy="-28" rx="17" ry="32" transform="rotate(45)"/><ellipse class="petal" cy="-28" rx="17" ry="32" transform="rotate(90)"/><ellipse class="petal" cy="-28" rx="17" ry="32" transform="rotate(135)"/><ellipse class="petal" cy="-28" rx="17" ry="32" transform="rotate(180)"/><ellipse class="petal" cy="-28" rx="17" ry="32" transform="rotate(225)"/><ellipse class="petal" cy="-28" rx="17" ry="32" transform="rotate(270)"/><ellipse class="petal" cy="-28" rx="17" ry="32" transform="rotate(315)"/>
+          </g><circle class="center" r="20"/><circle class="dot" cx="-7" cy="-6" r="3"/><circle class="dot" cx="7" cy="-4" r="3"/><circle class="dot" cx="-2" cy="8" r="3"/>
+        </g>
 
-    // Cargar JSON
-    const response = await fetch(jsonFile);
-    const regions = await response.json();
-
-    // Extraer todos los puntos
-    const allPoints = regions.flatMap(r => r.contour.map(p => ({x: p[0], y: p[1]})));
-
-    const min_x = Math.min(...allPoints.map(p => p.x));
-    const max_x = Math.max(...allPoints.map(p => p.x));
-    const min_y = Math.min(...allPoints.map(p => p.y));
-    const max_y = Math.max(...allPoints.map(p => p.y));
-
-    // Calcular escala y centro
-    const width = max_x - min_x;
-    const height = max_y - min_y;
-
-    const scale = Math.min(600 / width, 600 / height);
-    const center_x = (min_x + max_x) / 2;
-    const center_y = (min_y + max_y) / 2;
-
-    // Limpiar canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Centrar el dibujo
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-
-    // Dibujar regiones
-    regions.forEach(region => {
-        const color = `rgb(${region.color[0]}, ${region.color[1]}, ${region.color[2]})`;
-        ctx.fillStyle = color;
-        ctx.strokeStyle = color;
-
-        ctx.beginPath();
-
-        // Primer punto
-        let p0 = region.contour[0];
-        ctx.moveTo((p0[0] - center_x) * scale, -(p0[1] - center_y) * scale);
-
-        // Resto de puntos
-        for (let i = 1; i < region.contour.length; i++) {
-            let p = region.contour[i];
-            ctx.lineTo((p[0] - center_x) * scale, -(p[1] - center_y) * scale);
-        }
-
-        // Cerrar forma
-        ctx.closePath();
-        ctx.fill();
-    });
-}
-
-drawFromJson("resources/sunflowers.json");
-</script>
-
+        <g class="flower" transform="translate(180 260)">
+          <g><ellipse class="petal" cy="-24" rx="15" ry="29"/><ellipse class="petal" cy="-24" rx="15" ry="29" transform="rotate(60)"/><ellipse class="petal" cy="-24" rx="15" ry="29" transform="rotate(120)"/><ellipse class="petal" cy="-24" rx="15" ry="29" transform="rotate(180)"/><ellipse class="petal" cy="-24" rx="15" ry="29" transform="rotate(240)"/><ellipse class="petal" cy="-24" rx="15" ry="29" transform="rotate(300)"/></g><circle class="center" r="17"/>
+        </g>
+        <g class="flower" transform="translate(545 220)">
+          <g><ellipse class="petal" cy="-25" rx="16" ry="30"/><ellipse class="petal" cy="-25" rx="16" ry="30" transform="rotate(60)"/><ellipse class="petal" cy="-25" rx="16" ry="30" transform="rotate(120)"/><ellipse class="petal" cy="-25" rx="16" ry="30" transform="rotate(180)"/><ellipse class="petal" cy="-25" rx="16" ry="30" transform="rotate(240)"/><ellipse class="petal" cy="-25" rx="16" ry="30" transform="rotate(300)"/></g><circle class="center" r="18"/>
+        </g>
+        <g class="flower" transform="translate(150 365)">
+          <g><ellipse class="petal" cy="-21" rx="14" ry="26"/><ellipse class="petal" cy="-21" rx="14" ry="26" transform="rotate(60)"/><ellipse class="petal" cy="-21" rx="14" ry="26" transform="rotate(120)"/><ellipse class="petal" cy="-21" rx="14" ry="26" transform="rotate(180)"/><ellipse class="petal" cy="-21" rx="14" ry="26" transform="rotate(240)"/><ellipse class="petal" cy="-21" rx="14" ry="26" transform="rotate(300)"/></g><circle class="center" r="16"/>
+        </g>
+        <g class="flower" transform="translate(600 350)">
+          <g><ellipse class="petal" cy="-22" rx="14" ry="27"/><ellipse class="petal" cy="-22" rx="14" ry="27" transform="rotate(60)"/><ellipse class="petal" cy="-22" rx="14" ry="27" transform="rotate(120)"/><ellipse class="petal" cy="-22" rx="14" ry="27" transform="rotate(180)"/><ellipse class="petal" cy="-22" rx="14" ry="27" transform="rotate(240)"/><ellipse class="petal" cy="-22" rx="14" ry="27" transform="rotate(300)"/></g><circle class="center" r="16"/>
+        </g>
+        <g class="flower" transform="translate(310 130)">
+          <g><ellipse class="petal" cy="-20" rx="13" ry="24"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(60)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(120)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(180)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(240)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(300)"/></g><circle class="center" r="15"/>
+        </g>
+        <g class="flower" transform="translate(510 160)">
+          <g><ellipse class="petal" cy="-20" rx="13" ry="24"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(60)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(120)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(180)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(240)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(300)"/></g><circle class="center" r="15"/>
+        </g>
+        <g class="flower" transform="translate(220 420) scale(.85)">
+          <g><ellipse class="petal" cy="-20" rx="13" ry="24"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(60)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(120)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(180)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(240)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(300)"/></g><circle class="center" r="15"/>
+        </g>
+        <g class="flower" transform="translate(500 430) scale(.85)">
+          <g><ellipse class="petal" cy="-20" rx="13" ry="24"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(60)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(120)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(180)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(240)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(300)"/></g><circle class="center" r="15"/>
+        </g>
+      </g>
+      <circle class="firefly" cx="125" cy="220" r="4"/>
+      <circle class="firefly" cx="635" cy="280" r="3" style="animation-delay:-2s"/>
+      <circle class="firefly" cx="590" cy="160" r="3" style="animation-delay:-3.5s"/>
+      <ellipse cx="380" cy="682" rx="190" ry="24" fill="#07120d" opacity=".55"/>
+    </svg>
+    <h1 class="name">Valerie</h1>
+  </main>
 </body>
-  </html>
+</html>
