@@ -3,175 +3,266 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Valerie florece</title>
+  <title>Flores amarillas para Valerie</title>
   <style>
-    html, body { height: 100%; }
+    :root {
+      --yellow: #ffdf38;
+      --yellow-light: #fff15a;
+      --yellow-dark: #dcaa08;
+      --green: #1d7a3a;
+    }
+
     * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; }
     body {
       margin: 0;
       overflow: hidden;
+      background:
+        radial-gradient(ellipse at 50% 105%, rgba(32, 91, 49, .75) 0, transparent 42%),
+        radial-gradient(ellipse at 50% 40%, #163d54 0, #07141f 58%, #020507 100%);
       display: grid;
       place-items: center;
-      background:
-        radial-gradient(circle at 50% 18%, rgba(255, 232, 142, .22), transparent 24rem),
-        linear-gradient(180deg, #091a2f 0%, #18385a 70%, #0b1d16 100%);
-      color: #fff;
       font-family: Georgia, "Times New Roman", serif;
     }
 
-    .scene {
-      position: relative;
-      width: min(92vw, 760px);
-      height: min(92vh, 760px);
-      filter: drop-shadow(0 22px 24px rgba(0, 0, 0, .35));
+    .night {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle at 12% 22%, rgba(255, 255, 210, .8) 0 1px, transparent 2px),
+        radial-gradient(circle at 78% 18%, rgba(255, 245, 165, .7) 0 1px, transparent 2px),
+        radial-gradient(circle at 88% 55%, rgba(255, 255, 210, .55) 0 1px, transparent 2px);
+      opacity: .45;
     }
 
-    svg { width: 100%; height: 100%; display: block; }
+    .bouquet {
+      position: relative;
+      width: min(94vw, 820px);
+      height: min(94vh, 820px);
+    }
 
     .name {
       position: absolute;
+      z-index: 30;
       left: 50%;
-      bottom: 2.5%;
+      top: 7%;
       transform: translateX(-50%);
       margin: 0;
-      white-space: nowrap;
-      font-size: clamp(3.2rem, 12vw, 7.5rem);
-      font-weight: 700;
+      font-family: "Brush Script MT", "Segoe Script", cursive;
+      font-size: clamp(4.2rem, 13vw, 8.5rem);
       line-height: 1;
+      color: var(--yellow-light);
       letter-spacing: .02em;
-      color: #fff4a8;
       text-shadow:
-        0 2px 0 #c99a28,
-        0 0 12px rgba(255, 221, 92, .9),
-        0 0 32px rgba(255, 196, 52, .65);
-      animation: nameGlow 3s ease-in-out infinite alternate;
+        0 3px 0 var(--yellow-dark),
+        0 0 10px rgba(255, 234, 72, .8),
+        0 0 30px rgba(255, 211, 37, .55);
+      animation: nameGlow 2.8s ease-in-out infinite alternate;
     }
 
     .name::before,
     .name::after {
-      content: "✦";
+      content: "\2726";
       position: absolute;
-      top: 45%;
-      color: #ffd95a;
-      font-size: .24em;
-      text-shadow: 0 0 12px #fff;
-      animation: sparkle 1.8s ease-in-out infinite;
+      top: 42%;
+      font-family: Georgia, serif;
+      font-size: .22em;
+      color: #fff;
+      text-shadow: 0 0 12px #fff16a;
+      animation: twinkle 1.7s ease-in-out infinite;
     }
-    .name::before { left: -.55em; }
-    .name::after { right: -.55em; animation-delay: .9s; }
+    .name::before { left: -.7em; }
+    .name::after { right: -.7em; animation-delay: .8s; }
 
-    .branch {
-      stroke: #5a351f;
-      stroke-width: 16;
-      stroke-linecap: round;
-      fill: none;
-      transform-origin: 380px 650px;
-      animation: sway 4.8s ease-in-out infinite alternate;
+    .stem {
+      position: absolute;
+      z-index: 5;
+      left: 50%;
+      bottom: -3%;
+      width: 12px;
+      height: 69%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #16471f, #31994a 55%, #12371c);
+      transform-origin: bottom center;
+      box-shadow: inset 2px 0 3px rgba(255,255,255,.12);
+      animation: stemSway 4.6s ease-in-out infinite alternate;
     }
-    .branch.thin { stroke-width: 9; animation-duration: 5.6s; }
+    .stem.s1 { height: 72%; transform: translateX(-50%) rotate(-31deg); }
+    .stem.s2 { height: 66%; transform: translateX(-50%) rotate(-15deg); animation-delay: -.7s; }
+    .stem.s3 { height: 76%; transform: translateX(-50%) rotate(2deg); animation-delay: -1.4s; }
+    .stem.s4 { height: 64%; transform: translateX(-50%) rotate(18deg); animation-delay: -.3s; }
+    .stem.s5 { height: 70%; transform: translateX(-50%) rotate(34deg); animation-delay: -1.1s; }
 
     .flower {
-      transform-box: fill-box;
+      --size: 98px;
+      position: absolute;
+      z-index: 12;
+      width: var(--size);
+      height: var(--size);
       transform-origin: center;
-      animation: bloom 2.8s cubic-bezier(.2,.7,.2,1) both;
+      animation: flowerSway 3.8s ease-in-out infinite alternate;
     }
-    .flower:nth-child(3n) { animation-delay: .15s; }
-    .flower:nth-child(3n + 1) { animation-delay: .45s; }
+    .flower.f1 { left: 18%; top: 28%; --size: 112px; }
+    .flower.f2 { left: 31%; top: 24%; --size: 82px; animation-delay: -.8s; }
+    .flower.f3 { left: 44%; top: 16%; --size: 122px; animation-delay: -1.5s; }
+    .flower.f4 { left: 60%; top: 24%; --size: 88px; animation-delay: -.4s; }
+    .flower.f5 { left: 72%; top: 31%; --size: 108px; animation-delay: -1.2s; }
 
-    .petal { fill: #ffc928; stroke: #e6a612; stroke-width: 2; }
-    .center { fill: #7a4517; }
-    .dot { fill: #d08a1c; }
+    .petals {
+      position: absolute;
+      inset: 0;
+      animation: bloom 1.8s cubic-bezier(.2,.8,.2,1) both;
+    }
+    .petal {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 27%;
+      height: 43%;
+      margin-left: -13.5%;
+      margin-top: -43%;
+      border-radius: 70% 70% 48% 48%;
+      background:
+        radial-gradient(circle at 55% 20%, rgba(255,255,255,.55), transparent 16%),
+        linear-gradient(145deg, var(--yellow-light), var(--yellow) 58%, var(--yellow-dark));
+      transform-origin: 50% 100%;
+      border: 1px solid rgba(197, 151, 5, .45);
+      box-shadow: 0 3px 5px rgba(92, 58, 0, .18);
+    }
+    .petal:nth-child(1) { transform: rotate(0deg) translateY(-25%); }
+    .petal:nth-child(2) { transform: rotate(45deg) translateY(-25%); }
+    .petal:nth-child(3) { transform: rotate(90deg) translateY(-25%); }
+    .petal:nth-child(4) { transform: rotate(135deg) translateY(-25%); }
+    .petal:nth-child(5) { transform: rotate(180deg) translateY(-25%); }
+    .petal:nth-child(6) { transform: rotate(225deg) translateY(-25%); }
+    .petal:nth-child(7) { transform: rotate(270deg) translateY(-25%); }
+    .petal:nth-child(8) { transform: rotate(315deg) translateY(-25%); }
+
+    .center {
+      position: absolute;
+      z-index: 4;
+      left: 50%;
+      top: 50%;
+      width: 31%;
+      height: 31%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 35%, #b96e13 0 8%, transparent 9%),
+        radial-gradient(circle at 65% 38%, #d89a20 0 7%, transparent 8%),
+        radial-gradient(circle at 45% 68%, #c77712 0 8%, transparent 9%),
+        radial-gradient(circle, #8a4b14, #5f3211);
+      box-shadow: inset 0 0 8px #41230d, 0 2px 8px rgba(0,0,0,.35);
+    }
 
     .leaf {
-      fill: #2f7a3f;
-      stroke: #174d2b;
-      stroke-width: 3;
-      transform-box: fill-box;
-      transform-origin: bottom center;
-      animation: leafSway 3.8s ease-in-out infinite alternate;
+      position: absolute;
+      z-index: 8;
+      width: 82px;
+      height: 38px;
+      border-radius: 100% 0 100% 0;
+      background: linear-gradient(135deg, #58b64a, #1a7538);
+      box-shadow: inset 5px 4px 8px rgba(255,255,255,.12);
+      transform-origin: 100% 100%;
+      animation: leafSway 3.4s ease-in-out infinite alternate;
+    }
+    .leaf.l1 { left: 25%; bottom: 28%; transform: rotate(20deg); }
+    .leaf.l2 { left: 18%; bottom: 43%; transform: rotate(-30deg) scale(.85); }
+    .leaf.l3 { left: 60%; bottom: 35%; transform: rotate(145deg) scale(.9); }
+    .leaf.l4 { left: 66%; bottom: 48%; transform: rotate(205deg) scale(.8); animation-delay: -.9s; }
+    .leaf.l5 { left: 43%; bottom: 22%; transform: rotate(155deg) scale(.92); animation-delay: -1.4s; }
+
+    .ground {
+      position: absolute;
+      z-index: 3;
+      left: 50%;
+      bottom: 2%;
+      width: 76%;
+      height: 11%;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(12, 54, 27, .95), transparent 72%);
+      filter: blur(2px);
     }
 
     .firefly {
-      fill: #fff39a;
-      filter: drop-shadow(0 0 6px #ffe56b);
+      position: absolute;
+      z-index: 20;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #fff59a;
+      box-shadow: 0 0 10px 3px #ffe36a;
       animation: float 5s ease-in-out infinite alternate;
     }
+    .fly1 { left: 12%; top: 45%; }
+    .fly2 { right: 13%; top: 38%; animation-delay: -2s; }
+    .fly3 { left: 28%; top: 15%; animation-delay: -3.2s; }
 
-    @keyframes sway { to { transform: rotate(1.5deg); } }
-    @keyframes leafSway { to { transform: rotate(8deg); } }
+    @keyframes stemSway { to { margin-left: 5px; } }
+    @keyframes flowerSway { to { rotate: 4deg; } }
+    @keyframes leafSway { to { rotate: 12deg; } }
     @keyframes bloom {
-      0% { opacity: 0; filter: saturate(.4); }
-      65% { filter: saturate(1.15); }
-      100% { opacity: 1; filter: saturate(1); }
+      0% { opacity: 0; scale: .1; rotate: -25deg; }
+      70% { scale: 1.08; }
+      100% { opacity: 1; scale: 1; rotate: 0deg; }
     }
     @keyframes nameGlow {
-      from { filter: drop-shadow(0 0 4px rgba(255, 229, 96, .4)); }
-      to { filter: drop-shadow(0 0 16px rgba(255, 229, 96, .9)); }
+      from { filter: drop-shadow(0 0 3px rgba(255, 229, 74, .45)); }
+      to { filter: drop-shadow(0 0 18px rgba(255, 229, 74, .95)); }
     }
-    @keyframes sparkle {
-      50% { opacity: .25; transform: scale(.55) rotate(90deg); }
-    }
-    @keyframes float {
-      to { transform: translate(18px, -28px); opacity: .35; }
+    @keyframes twinkle { 50% { opacity: .25; scale: .5; } }
+    @keyframes float { to { transform: translate(22px, -32px); opacity: .25; } }
+
+    @media (max-width: 600px) {
+      .bouquet { width: 100vw; height: 78vh; margin-top: 8vh; }
+      .stem { width: 8px; }
+      .flower { --size: 76px; }
+      .leaf { width: 58px; height: 28px; }
+      .name { top: 11%; }
     }
   </style>
 </head>
 <body>
-  <main class="scene" aria-label="Árbol con flores amarillas y el nombre Valerie">
-    <svg viewBox="0 0 760 760" role="img" aria-label="Árbol animado florecido">
-      <g class="canopy">
-        <path class="branch" d="M380 660 C375 555 390 470 365 365 C350 300 325 250 300 205"/>
-        <path class="branch thin" d="M365 420 C280 390 220 330 180 260"/>
-        <path class="branch thin" d="M370 380 C445 340 510 285 545 220"/>
-        <path class="branch thin" d="M350 470 C270 455 205 420 150 365"/>
-        <path class="branch thin" d="M385 500 C465 475 550 420 600 350"/>
-        <path class="branch thin" d="M330 295 C300 235 292 180 310 130"/>
-        <path class="branch thin" d="M430 330 C440 270 470 205 510 160"/>
-
-        <g class="leaf" style="transform-origin: 180px 260px"><ellipse cx="188" cy="250" rx="38" ry="18" transform="rotate(-35 188 250)"/></g>
-        <g class="leaf"><ellipse cx="230" cy="330" rx="42" ry="20" transform="rotate(38 230 330)"/></g>
-        <g class="leaf"><ellipse cx="285" cy="210" rx="40" ry="19" transform="rotate(-55 285 210)"/></g>
-        <g class="leaf"><ellipse cx="500" cy="250" rx="43" ry="20" transform="rotate(38 500 250)"/></g>
-        <g class="leaf"><ellipse cx="555" cy="350" rx="42" ry="19" transform="rotate(-20 555 350)"/></g>
-        <g class="leaf"><ellipse cx="430" cy="240" rx="40" ry="18" transform="rotate(-42 430 240)"/></g>
-
-        <g class="flower" transform="translate(300 205)">
-          <g fill="#ffc928" stroke="#dba71a" stroke-width="2">
-            <ellipse class="petal" cy="-28" rx="17" ry="32"/><ellipse class="petal" cy="-28" rx="17" ry="32" transform="rotate(45)"/><ellipse class="petal" cy="-28" rx="17" ry="32" transform="rotate(90)"/><ellipse class="petal" cy="-28" rx="17" ry="32" transform="rotate(135)"/><ellipse class="petal" cy="-28" rx="17" ry="32" transform="rotate(180)"/><ellipse class="petal" cy="-28" rx="17" ry="32" transform="rotate(225)"/><ellipse class="petal" cy="-28" rx="17" ry="32" transform="rotate(270)"/><ellipse class="petal" cy="-28" rx="17" ry="32" transform="rotate(315)"/>
-          </g><circle class="center" r="20"/><circle class="dot" cx="-7" cy="-6" r="3"/><circle class="dot" cx="7" cy="-4" r="3"/><circle class="dot" cx="-2" cy="8" r="3"/>
-        </g>
-
-        <g class="flower" transform="translate(180 260)">
-          <g><ellipse class="petal" cy="-24" rx="15" ry="29"/><ellipse class="petal" cy="-24" rx="15" ry="29" transform="rotate(60)"/><ellipse class="petal" cy="-24" rx="15" ry="29" transform="rotate(120)"/><ellipse class="petal" cy="-24" rx="15" ry="29" transform="rotate(180)"/><ellipse class="petal" cy="-24" rx="15" ry="29" transform="rotate(240)"/><ellipse class="petal" cy="-24" rx="15" ry="29" transform="rotate(300)"/></g><circle class="center" r="17"/>
-        </g>
-        <g class="flower" transform="translate(545 220)">
-          <g><ellipse class="petal" cy="-25" rx="16" ry="30"/><ellipse class="petal" cy="-25" rx="16" ry="30" transform="rotate(60)"/><ellipse class="petal" cy="-25" rx="16" ry="30" transform="rotate(120)"/><ellipse class="petal" cy="-25" rx="16" ry="30" transform="rotate(180)"/><ellipse class="petal" cy="-25" rx="16" ry="30" transform="rotate(240)"/><ellipse class="petal" cy="-25" rx="16" ry="30" transform="rotate(300)"/></g><circle class="center" r="18"/>
-        </g>
-        <g class="flower" transform="translate(150 365)">
-          <g><ellipse class="petal" cy="-21" rx="14" ry="26"/><ellipse class="petal" cy="-21" rx="14" ry="26" transform="rotate(60)"/><ellipse class="petal" cy="-21" rx="14" ry="26" transform="rotate(120)"/><ellipse class="petal" cy="-21" rx="14" ry="26" transform="rotate(180)"/><ellipse class="petal" cy="-21" rx="14" ry="26" transform="rotate(240)"/><ellipse class="petal" cy="-21" rx="14" ry="26" transform="rotate(300)"/></g><circle class="center" r="16"/>
-        </g>
-        <g class="flower" transform="translate(600 350)">
-          <g><ellipse class="petal" cy="-22" rx="14" ry="27"/><ellipse class="petal" cy="-22" rx="14" ry="27" transform="rotate(60)"/><ellipse class="petal" cy="-22" rx="14" ry="27" transform="rotate(120)"/><ellipse class="petal" cy="-22" rx="14" ry="27" transform="rotate(180)"/><ellipse class="petal" cy="-22" rx="14" ry="27" transform="rotate(240)"/><ellipse class="petal" cy="-22" rx="14" ry="27" transform="rotate(300)"/></g><circle class="center" r="16"/>
-        </g>
-        <g class="flower" transform="translate(310 130)">
-          <g><ellipse class="petal" cy="-20" rx="13" ry="24"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(60)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(120)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(180)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(240)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(300)"/></g><circle class="center" r="15"/>
-        </g>
-        <g class="flower" transform="translate(510 160)">
-          <g><ellipse class="petal" cy="-20" rx="13" ry="24"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(60)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(120)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(180)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(240)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(300)"/></g><circle class="center" r="15"/>
-        </g>
-        <g class="flower" transform="translate(220 420) scale(.85)">
-          <g><ellipse class="petal" cy="-20" rx="13" ry="24"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(60)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(120)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(180)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(240)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(300)"/></g><circle class="center" r="15"/>
-        </g>
-        <g class="flower" transform="translate(500 430) scale(.85)">
-          <g><ellipse class="petal" cy="-20" rx="13" ry="24"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(60)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(120)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(180)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(240)"/><ellipse class="petal" cy="-20" rx="13" ry="24" transform="rotate(300)"/></g><circle class="center" r="15"/>
-        </g>
-      </g>
-      <circle class="firefly" cx="125" cy="220" r="4"/>
-      <circle class="firefly" cx="635" cy="280" r="3" style="animation-delay:-2s"/>
-      <circle class="firefly" cx="590" cy="160" r="3" style="animation-delay:-3.5s"/>
-      <ellipse cx="380" cy="682" rx="190" ry="24" fill="#07120d" opacity=".55"/>
-    </svg>
+  <div class="night"></div>
+  <main class="bouquet" aria-label="Ramo de flores amarillas para Valerie">
     <h1 class="name">Valerie</h1>
+    <div class="ground"></div>
+
+    <div class="stem s1"></div><div class="stem s2"></div><div class="stem s3"></div>
+    <div class="stem s4"></div><div class="stem s5"></div>
+
+    <div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div>
+    <div class="leaf l4"></div><div class="leaf l5"></div>
+
+    <div class="flower f1"><div class="petals">
+      <i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i>
+      <i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i>
+      <b class="center"></b>
+    </div></div>
+    <div class="flower f2"><div class="petals">
+      <i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i>
+      <i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i>
+      <b class="center"></b>
+    </div></div>
+    <div class="flower f3"><div class="petals">
+      <i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i>
+      <i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i>
+      <b class="center"></b>
+    </div></div>
+    <div class="flower f4"><div class="petals">
+      <i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i>
+      <i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i>
+      <b class="center"></b>
+    </div></div>
+    <div class="flower f5"><div class="petals">
+      <i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i>
+      <i class="petal"></i><i class="petal"></i><i class="petal"></i><i class="petal"></i>
+      <b class="center"></b>
+    </div></div>
+
+    <i class="firefly fly1"></i><i class="firefly fly2"></i><i class="firefly fly3"></i>
   </main>
 </body>
 </html>
